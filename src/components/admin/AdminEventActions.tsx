@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
+import { deleteRecord } from "@/lib/actions";
 
 interface Props {
   id: string;
@@ -18,9 +18,12 @@ export default function AdminEventActions({ id, table = "events" }: Props) {
   async function handleDelete() {
     if (!confirming) { setConfirming(true); return; }
     setDeleting(true);
-    const supabase = createClient();
-    await supabase.from(table).delete().eq("id", id);
-    router.refresh();
+    try {
+      await deleteRecord(table, id);
+      router.refresh();
+    } catch {
+      setDeleting(false);
+    }
   }
 
   const editHref = `/admin/${table}/${id}/edit`;
@@ -42,7 +45,7 @@ export default function AdminEventActions({ id, table = "events" }: Props) {
             : "text-gray-400 border border-gray-200 hover:border-red-300 hover:text-red-500"
         }`}
       >
-        {deleting ? "..." : confirming ? "Confirm?" : "Delete"}
+        {deleting ? "…" : confirming ? "Confirm?" : "Delete"}
       </button>
       {confirming && !deleting && (
         <button

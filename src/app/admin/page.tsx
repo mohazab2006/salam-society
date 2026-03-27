@@ -2,11 +2,12 @@ import { Metadata } from "next";
 import { createAdminClient } from "@/lib/supabase/server";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Dashboard" };
 
 async function getStats() {
   try {
-    const supabase = await createAdminClient();
+    const supabase = createAdminClient();
     const today = new Date().toISOString().split("T")[0];
 
     const [events, programs, media, partners] = await Promise.all([

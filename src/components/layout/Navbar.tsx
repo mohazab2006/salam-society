@@ -5,49 +5,42 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLocale } from "@/components/providers/LocaleProvider";
 
-const navLinks = [
-  { label: "Home", href: "/" },
-  { label: "Programs", href: "/programs" },
-  { label: "Events", href: "/events" },
-  { label: "About", href: "/#about" },
-  { label: "Contact", href: "/#contact" },
-];
-
-const moreLinks = [
-  {
-    label: "Podcast",
-    href: "/#podcast",
-    icon: (
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-        <line x1="12" y1="19" x2="12" y2="23"/>
-        <line x1="8" y1="23" x2="16" y2="23"/>
-      </svg>
-    ),
-  },
-  {
-    label: "Community Moments",
-    href: "/#moments",
-    icon: (
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-        <circle cx="8.5" cy="8.5" r="1.5"/>
-        <polyline points="21 15 16 10 5 21"/>
-      </svg>
-    ),
-  },
-];
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
-  const [lang, setLang] = useState<"EN" | "FR">("EN");
   const menuRef = useRef<HTMLDivElement>(null);
   const moreRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
+  const { locale, t, setLocale } = useLocale();
+
+  // When already on /, clicking logo or "Home" should scroll to top instead of re-navigating
+  function handleHomeClick(e: React.MouseEvent) {
+    if (pathname === "/") {
+      e.preventDefault();
+      scrollToTop();
+      setMobileOpen(false);
+    }
+  }
+
+  // Handle /#section links — scroll directly when already on homepage
+  function handleHashClick(e: React.MouseEvent, href: string) {
+    if (href.startsWith("/#")) {
+      const id = href.slice(2);
+      if (pathname === "/") {
+        e.preventDefault();
+        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+      }
+      setMobileOpen(false);
+      setMoreOpen(false);
+    }
+  }
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 40);
@@ -72,18 +65,69 @@ export default function Navbar() {
   useEffect(() => {
     if (mobileOpen) document.body.style.overflow = "hidden";
     else document.body.style.overflow = "";
-    return () => {
-      document.body.style.overflow = "";
-    };
+    return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
 
-  // Only use white text/logo when on the home page AND not yet scrolled
-  // (home page has a dark hero; all other pages have light backgrounds)
   const onDark = pathname === "/" && !scrolled;
 
   const linkCls = onDark
     ? "text-white/90 hover:text-white font-semibold text-[1rem] leading-none transition-colors duration-150"
     : "text-gray-800 hover:text-[#F47B20] font-semibold text-[1rem] leading-none transition-colors duration-150";
+
+  const navLinks = [
+    { label: t.nav.home, href: "/" },
+    { label: t.nav.programs, href: "/programs" },
+    { label: t.nav.events, href: "/events" },
+    { label: t.nav.about, href: "/#about" },
+    { label: t.nav.contact, href: "/#contact" },
+  ];
+
+  const moreLinks = [
+    {
+      label: t.nav.impact,
+      href: "/#impact",
+      icon: (
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+      ),
+    },
+    {
+      label: t.nav.partners,
+      href: "/#partners",
+      icon: (
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+      ),
+    },
+    {
+      label: t.nav.podcast,
+      href: "/#podcast",
+      icon: (
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+          <line x1="12" y1="19" x2="12" y2="23"/>
+          <line x1="8" y1="23" x2="16" y2="23"/>
+        </svg>
+      ),
+    },
+    {
+      label: t.nav.communityMoments,
+      href: "/#moments",
+      icon: (
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <polyline points="21 15 16 10 5 21"/>
+        </svg>
+      ),
+    },
+  ];
 
   return (
     <>
@@ -100,13 +144,7 @@ export default function Navbar() {
             {/* ── Logo ── */}
             <Link
               href="/"
-              onClick={(e) => {
-                if (pathname === "/") {
-                  e.preventDefault();
-                  window.scrollTo({ top: 0, behavior: "smooth" });
-                }
-                setMobileOpen(false);
-              }}
+              onClick={handleHomeClick}
               className="flex items-center flex-shrink-0 group"
               aria-label="Salam Society — Home"
             >
@@ -136,10 +174,13 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   className={linkCls}
-                  onClick={link.href === "/" && pathname === "/" ? (e) => {
-                    e.preventDefault();
-                    window.scrollTo({ top: 0, behavior: "smooth" });
-                  } : undefined}
+                  onClick={
+                    link.href === "/"
+                      ? handleHomeClick
+                      : link.href.startsWith("/#")
+                      ? (e) => handleHashClick(e, link.href)
+                      : undefined
+                  }
                 >
                   {link.label}
                 </Link>
@@ -153,7 +194,7 @@ export default function Navbar() {
                   aria-expanded={moreOpen}
                   aria-haspopup="true"
                 >
-                  More
+                  {t.nav.more}
                   <svg
                     width="14" height="14" viewBox="0 0 14 14" fill="none"
                     className={`transition-transform duration-200 ${moreOpen ? "rotate-180" : ""}`}
@@ -175,7 +216,7 @@ export default function Navbar() {
                         <Link
                           key={link.href}
                           href={link.href}
-                          onClick={() => setMoreOpen(false)}
+                          onClick={(e) => handleHashClick(e, link.href)}
                           className={`flex items-center gap-3 px-5 py-4 text-gray-700 hover:bg-orange-50 hover:text-[#F47B20] text-[0.95rem] font-semibold transition-colors ${
                             i < moreLinks.length - 1 ? "border-b border-gray-50" : ""
                           }`}
@@ -198,12 +239,12 @@ export default function Navbar() {
                   onDark ? "border-white/30" : "border-gray-200"
                 }`}
               >
-                {(["EN", "FR"] as const).map((l) => (
+                {(["en", "fr"] as const).map((l) => (
                   <button
                     key={l}
-                    onClick={() => setLang(l)}
-                    className={`px-3.5 py-1.5 text-[0.85rem] font-bold transition-all duration-200 ${
-                      lang === l
+                    onClick={() => setLocale(l)}
+                    className={`px-3.5 py-1.5 text-[0.85rem] font-bold uppercase transition-all duration-200 ${
+                      locale === l
                         ? onDark
                           ? "bg-white text-black"
                           : "bg-[#F47B20] text-white"
@@ -218,7 +259,7 @@ export default function Navbar() {
               </div>
 
               <Link href="/events" className="btn-orange text-[0.95rem] px-5 py-2.5">
-                View Events
+                {t.nav.viewEvents}
               </Link>
             </div>
 
@@ -278,16 +319,7 @@ export default function Navbar() {
               <div className="flex flex-col h-full">
                 {/* Drawer header */}
                 <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100">
-                  <Link
-                    href="/"
-                    onClick={(e) => {
-                      if (pathname === "/") {
-                        e.preventDefault();
-                        window.scrollTo({ top: 0, behavior: "smooth" });
-                      }
-                      setMobileOpen(false);
-                    }}
-                  >
+                  <Link href="/" onClick={handleHomeClick}>
                     <div className="relative w-[110px] h-[36px]">
                       <Image
                         src="/images/logo-orange.png"
@@ -320,13 +352,13 @@ export default function Navbar() {
                     >
                       <Link
                         href={link.href}
-                        onClick={(e) => {
-                          if (link.href === "/" && pathname === "/") {
-                            e.preventDefault();
-                            window.scrollTo({ top: 0, behavior: "smooth" });
-                          }
-                          setMobileOpen(false);
-                        }}
+                        onClick={
+                          link.href === "/"
+                            ? handleHomeClick
+                            : link.href.startsWith("/#")
+                            ? (e) => handleHashClick(e, link.href)
+                            : () => setMobileOpen(false)
+                        }
                         className="flex items-center px-4 py-4 rounded-xl text-[1.1rem] font-semibold text-gray-800 hover:bg-orange-50 hover:text-[#F47B20] transition-colors"
                       >
                         {link.label}
@@ -337,7 +369,7 @@ export default function Navbar() {
                   {/* Divider + "More" label */}
                   <div className="px-4 pt-4 pb-1">
                     <span className="text-xs font-bold uppercase tracking-widest text-gray-300">
-                      More
+                      {t.nav.more}
                     </span>
                   </div>
 
@@ -350,7 +382,7 @@ export default function Navbar() {
                     >
                       <Link
                         href={link.href}
-                        onClick={() => setMobileOpen(false)}
+                        onClick={(e) => handleHashClick(e, link.href)}
                         className="flex items-center gap-3 px-4 py-4 rounded-xl text-[1.1rem] font-semibold text-gray-700 hover:bg-orange-50 hover:text-[#F47B20] transition-colors"
                       >
                         <span className="text-gray-400">{link.icon}</span>
@@ -366,12 +398,12 @@ export default function Navbar() {
                   <div className="flex items-center gap-3">
                     <span className="text-sm text-gray-500 font-semibold">Language:</span>
                     <div className="flex rounded-full border border-gray-200 overflow-hidden">
-                      {(["EN", "FR"] as const).map((l) => (
+                      {(["en", "fr"] as const).map((l) => (
                         <button
                           key={l}
-                          onClick={() => setLang(l)}
-                          className={`px-4 py-2 text-sm font-bold transition-all ${
-                            lang === l ? "bg-[#F47B20] text-white" : "text-gray-400"
+                          onClick={() => setLocale(l)}
+                          className={`px-4 py-2 text-sm font-bold uppercase transition-all ${
+                            locale === l ? "bg-[#F47B20] text-white" : "text-gray-400"
                           }`}
                         >
                           {l}
@@ -385,7 +417,7 @@ export default function Navbar() {
                     className="btn-orange w-full text-center block text-[1rem]"
                     onClick={() => setMobileOpen(false)}
                   >
-                    View Events
+                    {t.nav.viewEvents}
                   </Link>
 
                   {/* Social icons */}
@@ -410,6 +442,17 @@ export default function Navbar() {
                     >
                       <svg width="26" height="20" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/>
+                      </svg>
+                    </a>
+                    <a
+                      href="https://chat.whatsapp.com/Bdwcs9euaZI3UnfKDrhtHL"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="WhatsApp"
+                      className="text-gray-400 hover:text-[#25D366] transition-colors"
+                    >
+                      <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.559 4.123 1.535 5.855L.057 23.215a.75.75 0 00.921.921l5.36-1.478A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.944 0-3.77-.493-5.364-1.36l-.387-.217-4.007 1.104 1.058-3.868-.24-.4A9.958 9.958 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
                       </svg>
                     </a>
                   </div>

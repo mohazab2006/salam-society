@@ -4,11 +4,12 @@ import Link from "next/link";
 import AdminEventActions from "@/components/admin/AdminEventActions";
 import type { Media } from "@/lib/types";
 
+export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Manage Media" };
 
 async function getMedia(): Promise<Media[]> {
   try {
-    const supabase = await createAdminClient();
+    const supabase = createAdminClient();
     const { data } = await supabase.from("media").select("*").order("sort_order", { ascending: true });
     return data ?? [];
   } catch {

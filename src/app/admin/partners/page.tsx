@@ -4,11 +4,12 @@ import Link from "next/link";
 import AdminEventActions from "@/components/admin/AdminEventActions";
 import type { Partner } from "@/lib/types";
 
+export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Manage Partners" };
 
 async function getPartners(): Promise<Partner[]> {
   try {
-    const supabase = await createAdminClient();
+    const supabase = createAdminClient();
     const { data } = await supabase.from("partners").select("*").order("sort_order", { ascending: true });
     return data ?? [];
   } catch {

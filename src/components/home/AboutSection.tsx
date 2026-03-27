@@ -3,32 +3,12 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-
-const pillars = [
-  {
-    icon: "🕌",
-    title: "Faith-Centered",
-    description: "Everything we do is rooted in Islamic values — compassion, knowledge, brotherhood, and service.",
-  },
-  {
-    icon: "👥",
-    title: "Community-First",
-    description: "We create spaces where Muslims of all ages and backgrounds feel welcomed, seen, and valued.",
-  },
-  {
-    icon: "⚡",
-    title: "Youth-Driven",
-    description: "We believe in the power of Muslim youth — our programs are built to support them at every stage.",
-  },
-  {
-    icon: "🤲",
-    title: "Service-Oriented",
-    description: "From food drives to outreach, we are committed to serving Ottawa and the broader community.",
-  },
-];
+import { useLocale } from "@/components/providers/LocaleProvider";
 
 export default function AboutSection() {
   const [aboutImgError, setAboutImgError] = useState(false);
+  const { t } = useLocale();
+  const a = t.about;
 
   return (
     <section id="about" className="section-padding bg-white overflow-hidden">
@@ -43,7 +23,6 @@ export default function AboutSection() {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="relative aspect-[4/3] rounded-3xl overflow-hidden bg-orange-50">
-              {/* Community photo — add about-community.jpg to /public/images/ to show it */}
               {!aboutImgError && (
                 <Image
                   src="/images/about-community.jpg"
@@ -54,7 +33,6 @@ export default function AboutSection() {
                   onError={() => setAboutImgError(true)}
                 />
               )}
-              {/* Gradient placeholder shown when no image is present */}
               <div className={`absolute inset-0 bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center transition-opacity duration-300 ${aboutImgError ? "opacity-100" : "opacity-0"}`}>
                 <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#F47B20" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round" className="opacity-30">
                   <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
@@ -87,45 +65,31 @@ export default function AboutSection() {
           >
             <span className="section-label mb-5 block">
               <span className="w-6 h-0.5 bg-orange-brand rounded-full inline-block" />
-              About Salam Society
+              {a.label}
             </span>
             <h2
               className="font-extrabold text-black leading-tight mb-6"
               style={{ fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)" }}
             >
-              A home for Muslim youth{" "}
-              <span className="text-orange-brand">in Ottawa</span>
+              {a.title}{" "}
+              <span className="text-orange-brand">{a.titleHighlight}</span>
             </h2>
             <div className="space-y-4 text-gray-600 text-base leading-relaxed">
-              <p>
-                Salam Society is a Muslim community organization based in Ottawa, Ontario —
-                dedicated to creating meaningful spaces for youth, families, and the broader Muslim community.
-              </p>
-              <p>
-                We organize events and programs that speak to brothers, sisters, youth, and kids.
-                From weekly halaqas and sports to community service and family celebrations, every
-                initiative is designed with purpose and care.
-              </p>
-              <p>
-                Our mission is simple: to craft a space where Muslim youth can confidently embrace
-                their identity — and find belonging, growth, and community along the way.
-              </p>
+              <p>{a.p1}</p>
+              <p>{a.p2}</p>
+              <p>{a.p3}</p>
             </div>
 
             <div className="flex flex-wrap gap-3 mt-8">
-              <a href="/#events" className="btn-orange">
-                See Upcoming Events
-              </a>
-              <a href="/#contact" className="btn-outline">
-                Get in Touch
-              </a>
+              <a href="/#events" className="btn-orange">{a.cta1}</a>
+              <a href="/#contact" className="btn-outline">{a.cta2}</a>
             </div>
           </motion.div>
         </div>
 
         {/* Pillars */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {pillars.map((pillar, i) => (
+          {a.pillars.map((pillar, i) => (
             <motion.div
               key={pillar.title}
               className="bg-gray-50 rounded-2xl p-6 hover:bg-orange-50 transition-colors duration-300 group"

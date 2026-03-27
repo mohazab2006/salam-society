@@ -4,11 +4,12 @@ import Link from "next/link";
 import AdminEventActions from "@/components/admin/AdminEventActions";
 import type { Program } from "@/lib/types";
 
+export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Manage Programs" };
 
 async function getPrograms(): Promise<Program[]> {
   try {
-    const supabase = await createAdminClient();
+    const supabase = createAdminClient();
     const { data } = await supabase.from("programs").select("*").order("sort_order", { ascending: true });
     return data ?? [];
   } catch {

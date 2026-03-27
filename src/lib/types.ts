@@ -32,6 +32,7 @@ export interface Program {
   age_group: string | null;
   schedule: string;
   location: string;
+  end_date: string | null;
   signup_required: boolean;
   signup_link: string | null;
   image_url: string | null;
@@ -74,6 +75,8 @@ export interface Initiative {
   title: string;
   description: string;
   image_url: string | null;
+  link_url: string | null;
+  link_label: string | null;
   status: "active" | "completed" | "upcoming";
   date: string | null;
   sort_order: number;

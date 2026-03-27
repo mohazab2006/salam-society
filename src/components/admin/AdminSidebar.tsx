@@ -61,6 +61,15 @@ const navItems = [
       </svg>
     ),
   },
+  {
+    label: "Initiatives",
+    href: "/admin/initiatives",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path d="M9 1l2 5h5l-4 3 1.5 5.5L9 12l-4.5 2.5L6 9 2 6h5z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/>
+      </svg>
+    ),
+  },
 ];
 
 export default function AdminSidebar() {

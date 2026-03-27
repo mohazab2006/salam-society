@@ -15,8 +15,13 @@ const footerLinks = {
   programs: [
     { label: "Brothers Programs", href: "/programs?category=brothers" },
     { label: "Sisters Programs", href: "/programs?category=sisters" },
-    { label: "Youth Programs", href: "/programs?category=everyone" },
     { label: "All Programs", href: "/programs" },
+  ],
+  events: [
+    { label: "Upcoming Events", href: "/events" },
+    { label: "Brothers Events", href: "/events?category=brothers" },
+    { label: "Sisters Events", href: "/events?category=sisters" },
+    { label: "All Events", href: "/events?category=everyone" },
   ],
 };
 
@@ -27,7 +32,7 @@ export default function Footer() {
     <footer className="bg-[#111111] text-white">
       <div className="container-custom">
         {/* Top */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 py-16 border-b border-white/10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 py-16 border-b border-white/10">
           {/* Brand */}
           <div className="lg:col-span-2">
             <Link
@@ -73,6 +78,15 @@ export default function Footer() {
               >
                 <svg width="18" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
               </a>
+              <a
+                href="https://chat.whatsapp.com/Bdwcs9euaZI3UnfKDrhtHL"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="WhatsApp"
+                className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-gray-400 hover:bg-[#25D366] hover:text-white transition-all duration-200"
+              >
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.559 4.123 1.535 5.855L.057 23.215a.75.75 0 00.921.921l5.36-1.478A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.944 0-3.77-.493-5.364-1.36l-.387-.217-4.007 1.104 1.058-3.868-.24-.4A9.958 9.958 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+              </a>
             </div>
           </div>
 
@@ -102,6 +116,20 @@ export default function Footer() {
             <h3 className="text-white font-600 text-sm mb-5 tracking-wide uppercase">Programs</h3>
             <ul className="space-y-3">
               {footerLinks.programs.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className="text-gray-400 text-sm hover:text-white transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Events */}
+          <div>
+            <h3 className="text-white font-600 text-sm mb-5 tracking-wide uppercase">Events</h3>
+            <ul className="space-y-3">
+              {footerLinks.events.map((link) => (
                 <li key={link.href}>
                   <Link href={link.href} className="text-gray-400 text-sm hover:text-white transition-colors">
                     {link.label}

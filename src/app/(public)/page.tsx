@@ -7,7 +7,7 @@ import ImpactSection from "@/components/home/ImpactSection";
 import PartnersSection from "@/components/home/PartnersSection";
 import AboutSection from "@/components/home/AboutSection";
 import ContactSection from "@/components/home/ContactSection";
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/server";
 
 export const revalidate = 60;
 
@@ -21,7 +21,7 @@ async function getData() {
 
   const fetch = async () => {
     try {
-      const supabase = await createClient();
+      const supabase = createAdminClient();
       const today = new Date().toISOString().split("T")[0];
 
       const [eventsRes, programsRes, mediaRes, partnersRes, initiativesRes] =
@@ -37,6 +37,7 @@ async function getData() {
             .from("programs")
             .select("*")
             .eq("published", true)
+            .or(`end_date.is.null,end_date.gte.${today}`)
             .order("sort_order", { ascending: true })
             .limit(3),
           supabase
@@ -44,7 +45,7 @@ async function getData() {
             .select("*")
             .eq("published", true)
             .order("sort_order", { ascending: true })
-            .limit(9),
+            .limit(12),
           supabase
             .from("partners")
             .select("*")

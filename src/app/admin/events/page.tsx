@@ -4,11 +4,12 @@ import Link from "next/link";
 import AdminEventActions from "@/components/admin/AdminEventActions";
 import type { Event } from "@/lib/types";
 
+export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Manage Events" };
 
 async function getEvents(): Promise<Event[]> {
   try {
-    const supabase = await createAdminClient();
+    const supabase = createAdminClient();
     const { data } = await supabase
       .from("events")
       .select("*")

@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import SectionHeader from "@/components/ui/SectionHeader";
 import EventCard from "@/components/ui/EventCard";
+import { useLocale } from "@/components/providers/LocaleProvider";
 import type { Event } from "@/lib/types";
 
 interface Props {
@@ -8,24 +11,26 @@ interface Props {
 }
 
 export default function EventsSection({ events }: Props) {
+  const { t } = useLocale();
+  const e = t.events;
   const displayEvents = events && events.length > 0 ? events.slice(0, 3) : [];
 
   return (
     <section id="events" className="section-padding bg-white">
       <div className="container-custom">
         <SectionHeader
-          label="Events"
-          title="What's coming "
-          highlight="up next"
-          description="Don't miss out — upcoming events for the whole community. From special programs to community gatherings, there's something for everyone."
+          label={e.label}
+          title={e.title}
+          highlight={e.highlight}
+          description={e.description}
           align="center"
         />
 
         {displayEvents.length === 0 ? (
           <div className="text-center py-20 text-gray-400">
             <p className="text-5xl mb-4">🗓️</p>
-            <p className="text-lg font-500">No upcoming events right now.</p>
-            <p className="text-sm mt-2">Check back soon — we're always planning something!</p>
+            <p className="text-lg font-500">{e.noEvents}</p>
+            <p className="text-sm mt-2">{e.checkBack}</p>
           </div>
         ) : (
           <>
@@ -37,7 +42,7 @@ export default function EventsSection({ events }: Props) {
 
             <div className="flex justify-center">
               <Link href="/events" className="btn-outline">
-                See All Events
+                {e.seeAll}
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                   <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>

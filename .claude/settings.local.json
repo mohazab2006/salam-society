@@ -10,7 +10,9 @@
       "Bash(ls /c/Projects/websites/salam-society/tailwind.config*)",
       "Bash(ls /c/Projects/websites/salam-society/postcss.config*)",
       "Bash(node -e \"const p = require\\(''./node_modules/@supabase/supabase-js/package.json''\\); console.log\\(''supabase-js:'', p.version\\)\")",
-      "Bash(node -e \"const p = require\\(''./node_modules/@supabase/ssr/package.json''\\); console.log\\(''supabase-ssr:'', p.version\\)\")"
+      "Bash(node -e \"const p = require\\(''./node_modules/@supabase/ssr/package.json''\\); console.log\\(''supabase-ssr:'', p.version\\)\")",
+      "Bash(ls \"C:\\\\Projects\\\\websites\\\\salam-society\\\\src\\\\app\\\\admin\\\\partners\"\" && ls \"C:Projectswebsitessalam-societysrcappadminprograms\"\")",
+      "Bash(npm test:*)"
     ]
   }
 }

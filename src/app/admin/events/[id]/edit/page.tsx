@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { createAdminClient } from "@/lib/supabase/server";
 import EventForm from "@/components/admin/EventForm";
 
+export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Edit Event" };
 
 interface Props {
@@ -13,7 +14,7 @@ export default async function EditEventPage({ params }: Props) {
   const { id } = await params;
 
   try {
-    const supabase = await createAdminClient();
+    const supabase = createAdminClient();
     const { data: event } = await supabase.from("events").select("*").eq("id", id).single();
     if (!event) notFound();
 
