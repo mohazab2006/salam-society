@@ -100,7 +100,13 @@ export default function Navbar() {
             {/* ── Logo ── */}
             <Link
               href="/"
-              onClick={() => setMobileOpen(false)}
+              onClick={(e) => {
+                if (pathname === "/") {
+                  e.preventDefault();
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }
+                setMobileOpen(false);
+              }}
               className="flex items-center flex-shrink-0 group"
               aria-label="Salam Society — Home"
             >
@@ -126,7 +132,15 @@ export default function Navbar() {
             {/* ── Desktop links ── */}
             <div className="hidden md:flex items-center gap-7">
               {navLinks.map((link) => (
-                <Link key={link.href} href={link.href} className={linkCls}>
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={linkCls}
+                  onClick={link.href === "/" && pathname === "/" ? (e) => {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  } : undefined}
+                >
                   {link.label}
                 </Link>
               ))}
@@ -264,7 +278,16 @@ export default function Navbar() {
               <div className="flex flex-col h-full">
                 {/* Drawer header */}
                 <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100">
-                  <Link href="/" onClick={() => setMobileOpen(false)}>
+                  <Link
+                    href="/"
+                    onClick={(e) => {
+                      if (pathname === "/") {
+                        e.preventDefault();
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }
+                      setMobileOpen(false);
+                    }}
+                  >
                     <div className="relative w-[110px] h-[36px]">
                       <Image
                         src="/images/logo-orange.png"
@@ -297,7 +320,13 @@ export default function Navbar() {
                     >
                       <Link
                         href={link.href}
-                        onClick={() => setMobileOpen(false)}
+                        onClick={(e) => {
+                          if (link.href === "/" && pathname === "/") {
+                            e.preventDefault();
+                            window.scrollTo({ top: 0, behavior: "smooth" });
+                          }
+                          setMobileOpen(false);
+                        }}
                         className="flex items-center px-4 py-4 rounded-xl text-[1.1rem] font-semibold text-gray-800 hover:bg-orange-50 hover:text-[#F47B20] transition-colors"
                       >
                         {link.label}

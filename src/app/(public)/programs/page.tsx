@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: "Explore ongoing programs at Salam Society — for brothers, sisters, youth, and families in Ottawa.",
 };
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 const fallbackPrograms: Program[] = [
   {

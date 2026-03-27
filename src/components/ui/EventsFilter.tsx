@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import type { AudienceCategory } from "@/lib/types";
 
 const filters: { label: string; value: AudienceCategory | "all" }[] = [
@@ -18,6 +18,7 @@ interface Props {
 function FilterButtons({ activeCategory }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
 
   function handleFilter(value: AudienceCategory | "all") {
     const params = new URLSearchParams(searchParams.toString());
@@ -26,7 +27,8 @@ function FilterButtons({ activeCategory }: Props) {
     } else {
       params.set("category", value);
     }
-    router.push(`?${params.toString()}`, { scroll: false });
+    const qs = params.toString();
+    router.push(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
   }
 
   const activeValue = activeCategory ?? "all";
