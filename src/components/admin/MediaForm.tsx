@@ -22,7 +22,7 @@ export default function MediaForm({ media }: Props) {
     caption: media?.caption ?? "",
     file_url: media?.file_url ?? "",
     thumbnail_url: media?.thumbnail_url ?? "",
-    featured: media?.featured ?? false,
+
     published: media?.published ?? true,
     sort_order: media?.sort_order ?? 0,
   });
@@ -141,16 +141,6 @@ export default function MediaForm({ media }: Props) {
         </div>
 
         <div className="flex flex-col gap-3">
-          <label className="flex items-center gap-3 cursor-pointer">
-            <input
-              type="checkbox"
-              name="featured"
-              checked={form.featured}
-              onChange={handleChange}
-              className="w-4 h-4 accent-orange-brand"
-            />
-            <span className="text-sm font-500 text-gray-700">Featured</span>
-          </label>
           <label className="flex items-center gap-3 cursor-pointer">
             <input
               type="checkbox"

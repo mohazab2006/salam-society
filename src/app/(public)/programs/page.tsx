@@ -8,7 +8,14 @@ import { getT } from "@/lib/i18n";
 
 export const metadata: Metadata = {
   title: "Programs",
-  description: "Explore ongoing programs at Salam Society — for brothers, sisters, youth, and families in Ottawa.",
+  description: "Explore ongoing and upcoming programs at Salam Society — for brothers, sisters, youth, and families in Ottawa.",
+  alternates: { canonical: "https://salamsociety.ca/programs" },
+  openGraph: {
+    title: "Programs — Salam Society",
+    description: "Community programs for Ottawa's Muslim youth, sisters, brothers, and families.",
+    url: "https://salamsociety.ca/programs",
+    images: [{ url: "/images/hero-bg.jpg", width: 1200, height: 630 }],
+  },
 };
 
 export const dynamic = "force-dynamic";
