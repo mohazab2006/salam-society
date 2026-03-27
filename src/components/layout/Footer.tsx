@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 const footerLinks = {
   explore: [
@@ -18,6 +21,8 @@ const footerLinks = {
 };
 
 export default function Footer() {
+  const pathname = usePathname();
+
   return (
     <footer className="bg-[#111111] text-white">
       <div className="container-custom">
@@ -25,7 +30,16 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 py-16 border-b border-white/10">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <Link href="/" className="inline-block mb-5">
+            <Link
+              href="/"
+              className="inline-block mb-5"
+              onClick={(e) => {
+                if (pathname === "/") {
+                  e.preventDefault();
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }
+              }}
+            >
               <div className="relative w-[130px] h-[44px]">
                 <Image
                   src="/images/logo-orange.png"
@@ -68,7 +82,14 @@ export default function Footer() {
             <ul className="space-y-3">
               {footerLinks.explore.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="text-gray-400 text-sm hover:text-white transition-colors">
+                  <Link
+                    href={link.href}
+                    className="text-gray-400 text-sm hover:text-white transition-colors"
+                    onClick={link.href === "/" && pathname === "/" ? (e) => {
+                      e.preventDefault();
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    } : undefined}
+                  >
                     {link.label}
                   </Link>
                 </li>
