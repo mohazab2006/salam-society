@@ -310,7 +310,7 @@ export default function Navbar() {
             />
             <motion.div
               ref={menuRef}
-              className="fixed top-0 right-0 bottom-0 w-[82vw] max-w-sm bg-white z-50 md:hidden shadow-2xl"
+              className="fixed top-0 right-0 bottom-0 w-[82vw] max-w-sm bg-white z-50 md:hidden shadow-2xl overflow-y-auto overscroll-contain"
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}

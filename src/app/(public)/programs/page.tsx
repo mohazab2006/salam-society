@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { createAdminClient } from "@/lib/supabase/server";
 import ProgramCard from "@/components/ui/ProgramCard";
 import EventsFilter from "@/components/ui/EventsFilter";
-import type { AudienceCategory } from "@/lib/types";
+import type { AudienceCategory, Program } from "@/lib/types";
 import { getLocaleServer } from "@/lib/locale-server";
 import { getT } from "@/lib/i18n";
 
@@ -18,19 +18,19 @@ export const metadata: Metadata = {
   },
 };
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300; // re-fetch every 5 min, serve cached in between
 
 async function getPrograms(category?: AudienceCategory) {
   try {
     const supabase = createAdminClient();
     let query = supabase
       .from("programs")
-      .select("*")
+      .select("id,title,slug,description,image_url,audience_category,schedule,location,signup_link,signup_required,end_date")
       .eq("published", true)
       .order("sort_order", { ascending: true });
     if (category) query = query.eq("audience_category", category);
     const { data } = await query;
-    return data ?? [];
+    return (data ?? []) as unknown as Program[];
   } catch {
     return [];
   }

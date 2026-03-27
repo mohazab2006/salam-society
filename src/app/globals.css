@@ -10,12 +10,17 @@
 
 * {
   box-sizing: border-box;
+  /* Remove iOS blue flash on tap */
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Prevent iOS from inflating font sizes in landscape */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -24,6 +29,13 @@ body {
   font-family: var(--font-inter), system-ui, sans-serif;
   line-height: 1.6;
   overflow-x: hidden;
+  /* Prevent overscroll bounce on iOS causing layout jumps */
+  overscroll-behavior-x: none;
+}
+
+/* Instant tap response — removes 300ms delay on mobile */
+a, button, [role="button"], input, select, textarea, label {
+  touch-action: manipulation;
 }
 
 ::-webkit-scrollbar { width: 5px; }

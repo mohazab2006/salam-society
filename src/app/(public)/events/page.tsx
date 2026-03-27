@@ -25,14 +25,14 @@ async function getEvents(category?: AudienceCategory) {
     const supabase = createAdminClient();
     let query = supabase
       .from("events")
-      .select("*")
+      .select("id,title,slug,date,location,description,image_url,audience_category,start_time,end_time,signup_link,signup_required")
       .eq("published", true)
       .order("date", { ascending: true });
 
     if (category) query = query.eq("audience_category", category);
 
     const { data } = await query;
-    return data ?? [];
+    return (data ?? []) as unknown as Event[];
   } catch {
     return [];
   }
@@ -58,7 +58,7 @@ export default async function EventsPage({ searchParams }: Props) {
   const past = events.filter((e) => e.date < today);
 
   // Event rich snippets — Google shows these directly in search results
-  const eventJsonLd = upcoming.map((event: Event) => ({
+  const eventJsonLd = upcoming.map((event) => ({
     "@context": "https://schema.org",
     "@type": "Event",
     name: event.title,

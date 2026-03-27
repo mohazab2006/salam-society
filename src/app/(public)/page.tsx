@@ -8,6 +8,7 @@ import PartnersSection from "@/components/home/PartnersSection";
 import AboutSection from "@/components/home/AboutSection";
 import ContactSection from "@/components/home/ContactSection";
 import { createAdminClient } from "@/lib/supabase/server";
+import type { Event, Program, Media, Partner, Initiative } from "@/lib/types";
 
 export const revalidate = 60;
 
@@ -28,43 +29,43 @@ async function getData() {
         await Promise.all([
           supabase
             .from("events")
-            .select("*")
+            .select("id,title,slug,date,location,image_url,audience_category,start_time,signup_link,signup_required,description")
             .eq("published", true)
             .gte("date", today)
             .order("date", { ascending: true })
             .limit(3),
           supabase
             .from("programs")
-            .select("*")
+            .select("id,title,slug,description,image_url,audience_category,schedule,location,signup_link,signup_required,end_date")
             .eq("published", true)
             .or(`end_date.is.null,end_date.gte.${today}`)
             .order("sort_order", { ascending: true })
             .limit(3),
           supabase
             .from("media")
-            .select("*")
+            .select("id,type,title,caption,file_url,thumbnail_url,sort_order")
             .eq("published", true)
             .order("sort_order", { ascending: true })
             .limit(12),
           supabase
             .from("partners")
-            .select("*")
+            .select("id,name,logo_url,website_url,category")
             .eq("published", true)
             .order("sort_order", { ascending: true }),
           supabase
             .from("initiatives")
-            .select("*")
+            .select("id,title,description,image_url,status,link_url,link_label,date")
             .eq("published", true)
             .order("sort_order", { ascending: true })
             .limit(3),
         ]);
 
       return {
-        events: eventsRes.data ?? [],
-        programs: programsRes.data ?? [],
-        media: mediaRes.data ?? [],
-        partners: partnersRes.data ?? [],
-        initiatives: initiativesRes.data ?? [],
+        events: (eventsRes.data ?? []) as unknown as Event[],
+        programs: (programsRes.data ?? []) as unknown as Program[],
+        media: (mediaRes.data ?? []) as unknown as Media[],
+        partners: (partnersRes.data ?? []) as unknown as Partner[],
+        initiatives: (initiativesRes.data ?? []) as unknown as Initiative[],
       };
     } catch {
       return EMPTY;

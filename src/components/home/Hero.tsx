@@ -43,9 +43,9 @@ export default function Hero() {
         <div className="absolute top-0 inset-x-0 h-28 bg-gradient-to-b from-black/90 to-transparent pointer-events-none" />
       </div>
 
-      {/* ── Orange ambient blob ── */}
+      {/* ── Orange ambient blob — smaller/less blur on mobile to save GPU ── */}
       <div
-        className="absolute top-1/4 right-1/4 w-[600px] h-[600px] rounded-full opacity-10 blur-[120px] z-0 pointer-events-none"
+        className="absolute top-1/4 right-1/4 w-[280px] h-[280px] md:w-[600px] md:h-[600px] rounded-full opacity-10 blur-[60px] md:blur-[120px] z-0 pointer-events-none"
         style={{ background: "#F47B20" }}
       />
 
