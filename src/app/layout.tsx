@@ -79,29 +79,55 @@ export const metadata: Metadata = {
   },
 };
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "NGO",
-  name: "Salam Society",
-  url: BASE_URL,
-  logo: `${BASE_URL}/images/logo-orange.png`,
-  description:
-    "Crafting a space for Muslim youth to confidently embrace their identity. Events, programs, and community initiatives in Ottawa, Ontario.",
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Ottawa",
-    addressRegion: "ON",
-    addressCountry: "CA",
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "NGO",
+    name: "Salam Society",
+    alternateName: "Salam Society Canada",
+    url: BASE_URL,
+    logo: `${BASE_URL}/images/logo-orange.png`,
+    image: `${BASE_URL}/images/hero-bg.jpg`,
+    description:
+      "Crafting a space for Muslim youth to confidently embrace their identity. Events, programs, and community initiatives in Ottawa, Ontario.",
+    foundingLocation: {
+      "@type": "Place",
+      name: "Ottawa, Ontario, Canada",
+    },
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Ottawa",
+      addressRegion: "ON",
+      addressCountry: "CA",
+    },
+    areaServed: [
+      { "@type": "City", name: "Ottawa" },
+      { "@type": "AdministrativeArea", name: "Ontario" },
+    ],
+    email: "SalamSocietyCanada@gmail.com",
+    knowsLanguage: ["en", "fr"],
+    sameAs: [
+      "https://www.instagram.com/salamsociety.ca",
+      "https://chat.whatsapp.com/Bdwcs9euaZI3UnfKDrhtHL",
+    ],
   },
-  areaServed: {
-    "@type": "City",
-    name: "Ottawa",
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Salam Society",
+    url: BASE_URL,
+    description: "Muslim community events, programs, and initiatives in Ottawa.",
+    inLanguage: ["en", "fr"],
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${BASE_URL}/events?category={search_term_string}`,
+      },
+      "query-input": "required name=search_term_string",
+    },
   },
-  email: "SalamSocietyCanada@gmail.com",
-  sameAs: [
-    "https://www.instagram.com/salamsociety.ca",
-  ],
-};
+];
 
 export default function RootLayout({
   children,
@@ -109,6 +135,21 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
       <head>
+        {/* Preconnect to external origins for faster loads (Core Web Vitals) */}
+        <link rel="preconnect" href="https://xcnkiwizosklxgsasksc.supabase.co" />
+        <link rel="dns-prefetch" href="https://xcnkiwizosklxgsasksc.supabase.co" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+
+        {/* Geo tags — pins site to Ottawa for local search */}
+        <meta name="geo.region" content="CA-ON" />
+        <meta name="geo.placename" content="Ottawa, Ontario, Canada" />
+        <meta name="geo.position" content="45.4215;-75.6972" />
+        <meta name="ICBM" content="45.4215, -75.6972" />
+
+        {/* Language */}
+        <meta httpEquiv="content-language" content="en, fr" />
+
+        {/* Structured data */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

@@ -57,7 +57,44 @@ export default async function EventsPage({ searchParams }: Props) {
   const upcoming = events.filter((e) => e.date >= today);
   const past = events.filter((e) => e.date < today);
 
+  // Event rich snippets — Google shows these directly in search results
+  const eventJsonLd = upcoming.map((event: Event) => ({
+    "@context": "https://schema.org",
+    "@type": "Event",
+    name: event.title,
+    description: event.description ?? "",
+    startDate: event.date,
+    eventStatus: "https://schema.org/EventScheduled",
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    location: {
+      "@type": "Place",
+      name: event.location ?? "Ottawa, Ontario",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Ottawa",
+        addressRegion: "ON",
+        addressCountry: "CA",
+      },
+    },
+    organizer: {
+      "@type": "NGO",
+      name: "Salam Society",
+      url: "https://salamsociety.ca",
+    },
+    image: event.image_url
+      ? [event.image_url]
+      : ["https://salamsociety.ca/images/hero-bg.jpg"],
+    url: "https://salamsociety.ca/events",
+  }));
+
   return (
+    <>
+      {eventJsonLd.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(eventJsonLd) }}
+        />
+      )}
     <div className="pt-20">
       {/* Hero banner */}
       <div className="bg-[#0f0f0f] py-16 md:py-20">
@@ -122,5 +159,6 @@ export default async function EventsPage({ searchParams }: Props) {
         </div>
       </div>
     </div>
+    </>
   );
 }
