@@ -3,7 +3,14 @@
     "allow": [
       "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --no-git --yes)",
       "Bash(npx create-next-app@latest temp-init --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --no-git --yes)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(Remove-Item \"C:\\\\Projects\\\\websites\\\\salam-society\\\\src\\\\middleware.ts\" -Force)",
+      "Bash(ls /c/Projects/websites/salam-society/tailwind.config*)",
+      "Bash(ls /c/Projects/websites/salam-society/postcss.config*)",
+      "Bash(node -e \"const p = require\\(''./node_modules/@supabase/supabase-js/package.json''\\); console.log\\(''supabase-js:'', p.version\\)\")",
+      "Bash(node -e \"const p = require\\(''./node_modules/@supabase/ssr/package.json''\\); console.log\\(''supabase-ssr:'', p.version\\)\")"
     ]
   }
 }
