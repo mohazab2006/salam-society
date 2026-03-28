@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { LocaleProvider } from "@/components/providers/LocaleProvider";
 import { ScrollRestoration } from "@/components/ScrollRestoration";
+import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
 const inter = Inter({
@@ -10,10 +11,11 @@ const inter = Inter({
   display: "swap",
 });
 
-const BASE_URL = "https://salamsociety.ca";
+const BASE_URL = getSiteUrl();
+const metadataBase = new URL(BASE_URL);
 
 export const metadata: Metadata = {
-  metadataBase: new URL(BASE_URL),
+  metadataBase,
   title: {
     default: "Salam Society — Muslim Community in Ottawa",
     template: "%s | Salam Society",
@@ -46,7 +48,7 @@ export const metadata: Metadata = {
       "Crafting a space for Muslim youth to confidently embrace their identity. Events, programs, and community initiatives in Ottawa.",
     images: [
       {
-        url: "/opengraph-image",
+        url: new URL("/opengraph-image", metadataBase).href,
         width: 1200,
         height: 630,
         alt: "Salam Society — Muslim Community in Ottawa",
@@ -58,7 +60,7 @@ export const metadata: Metadata = {
     title: "Salam Society — Muslim Community in Ottawa",
     description:
       "Events, programs, and community initiatives for Muslim youth and families in Ottawa.",
-    images: ["/opengraph-image"],
+    images: [new URL("/opengraph-image", metadataBase).href],
   },
   robots: {
     index: true,
