@@ -80,5 +80,3 @@ Instead of relying on tools like WordPress or other CMS platforms, I chose to bu
 - Make it easier to extend in the future
 
 ---
-
-## Environment Variables
