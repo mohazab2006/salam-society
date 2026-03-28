@@ -146,6 +146,9 @@ export default function RootLayout({
         {/* Language */}
         <meta httpEquiv="content-language" content="en, fr" />
 
+        {/* Prevent browser scroll restoration from flashing the scrolled navbar state */}
+        <script dangerouslySetInnerHTML={{ __html: "history.scrollRestoration='manual'" }} />
+
         {/* Structured data */}
         <script
           type="application/ld+json"

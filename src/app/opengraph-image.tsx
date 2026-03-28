@@ -1,17 +1,10 @@
 import { ImageResponse } from "next/og";
-import { readFileSync } from "fs";
-import path from "path";
 
-export const runtime = "nodejs";
 export const alt = "Salam Society — Muslim Community in Ottawa";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default function OgImage() {
-  const logoPath = path.join(process.cwd(), "public/images/clear-logo.png");
-  const logoData = readFileSync(logoPath);
-  const logoBase64 = `data:image/png;base64,${logoData.toString("base64")}`;
-
   return new ImageResponse(
     (
       <div
@@ -47,19 +40,19 @@ export default function OgImage() {
           </span>
         </div>
 
-        {/* Middle: logo + tagline */}
+        {/* Middle: text logo + tagline */}
         <div style={{ display: "flex", flexDirection: "column", gap: "0px" }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={logoBase64}
-            alt="Salam Society"
-            width={420}
-            height={140}
-            style={{ objectFit: "contain", objectPosition: "left" }}
-          />
+          <div style={{ display: "flex", flexDirection: "column", lineHeight: 1 }}>
+            <span style={{ fontSize: "96px", fontWeight: 900, color: "#F47B20", letterSpacing: "-2px" }}>
+              salam
+            </span>
+            <span style={{ fontSize: "36px", fontWeight: 300, color: "#ffffff", letterSpacing: "18px", marginTop: "-8px" }}>
+              society
+            </span>
+          </div>
 
           {/* Divider */}
-          <div style={{ width: "64px", height: "3px", background: "#F47B20", borderRadius: "2px", marginTop: "32px", marginBottom: "28px" }} />
+          <div style={{ width: "64px", height: "3px", background: "#F47B20", borderRadius: "2px", marginTop: "36px", marginBottom: "28px" }} />
 
           {/* Tagline */}
           <span style={{ fontSize: "30px", color: "#aaaaaa", fontWeight: 400, lineHeight: 1.4 }}>
@@ -73,7 +66,7 @@ export default function OgImage() {
         {/* Bottom: URL */}
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
           <span style={{ color: "#444444", fontSize: "20px", letterSpacing: "0.05em" }}>
-            salamsociety.ca
+            salam-society.vercel.app
           </span>
         </div>
       </div>

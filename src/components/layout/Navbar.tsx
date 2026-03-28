@@ -43,9 +43,6 @@ export default function Navbar() {
   }
 
   useLayoutEffect(() => {
-    if ("scrollRestoration" in history) {
-      history.scrollRestoration = "manual";
-    }
     const handleScroll = () => setScrolled(window.scrollY > 40);
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
