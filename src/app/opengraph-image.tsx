@@ -1,6 +1,5 @@
-import { readFile } from "node:fs/promises";
-import { join } from "node:path";
 import { ImageResponse } from "next/og";
+import { getSiteUrl } from "@/lib/site-url";
 import { getRequestSiteOrigin } from "@/lib/request-site-origin";
 
 export const alt = "Salam Society — Muslim Community in Ottawa";
@@ -9,78 +8,77 @@ export const contentType = "image/png";
 export const runtime = "nodejs";
 
 export default async function OgImage() {
-  const logoBuffer = await readFile(join(process.cwd(), "public/images/clear-logo.png"));
-  const logoSrc = `data:image/png;base64,${logoBuffer.toString("base64")}`;
+  // Fetch logo from static CDN — works on Vercel (public files are on CDN, not in function bundle)
+  const staticOrigin = getSiteUrl();
+  const logoRes = await fetch(`${staticOrigin}/images/clear-logo.png`);
+  const logoBuffer = await logoRes.arrayBuffer();
+  const logoSrc = `data:image/png;base64,${Buffer.from(logoBuffer).toString("base64")}`;
+
+  // Display hostname (adapts to salamsociety.ca or *.vercel.app)
   const siteHost = new URL(await getRequestSiteOrigin()).host;
 
   return new ImageResponse(
     (
       <div
         style={{
-          width: "100%",
-          height: "100%",
-          position: "relative",
-          background: "#ffffff",
+          width: "1200px",
+          height: "630px",
+          background: "#0f0f0f",
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "56px 72px",
+          justifyContent: "space-between",
+          padding: "72px 96px",
+          position: "relative",
         }}
       >
+        {/* Left orange accent bar */}
         <div
           style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "28px",
-            flex: 1,
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "6px",
+            height: "100%",
+            background: "#F47B20",
+            borderRadius: "0 3px 3px 0",
           }}
-        >
-          <span
-            style={{
-              color: "#F47B20",
-              fontSize: "20px",
-              fontWeight: 700,
-              letterSpacing: "0.22em",
-              textTransform: "uppercase",
-            }}
-          >
-            Ottawa, Ontario
-          </span>
-          <img
-            src={logoSrc}
-            alt=""
-            width={560}
-            height={220}
-            style={{ objectFit: "contain" }}
-          />
-          <span
-            style={{
-              color: "#1f2937",
-              fontSize: "30px",
-              fontWeight: 600,
-              textAlign: "center",
-              lineHeight: 1.35,
-              maxWidth: "920px",
-            }}
-          >
-            Muslim community — events, programs & youth initiatives
+        />
+
+        {/* Top: location label */}
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          <div style={{ width: "32px", height: "3px", background: "#F47B20", borderRadius: "2px" }} />
+          <span style={{ color: "#F47B20", fontSize: "17px", fontWeight: 700, letterSpacing: "0.1em" }}>
+            OTTAWA, ONTARIO · MUSLIM COMMUNITY
           </span>
         </div>
-        <span
-          style={{
-            position: "absolute",
-            bottom: "40px",
-            right: "56px",
-            color: "#9ca3af",
-            fontSize: "18px",
-            letterSpacing: "0.06em",
-          }}
-        >
-          {siteHost}
-        </span>
+
+        {/* Middle: logo + tagline */}
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={logoSrc}
+            alt="Salam Society"
+            width={400}
+            height={130}
+            style={{ objectFit: "contain", objectPosition: "left" }}
+          />
+
+          <div style={{ width: "64px", height: "3px", background: "#F47B20", borderRadius: "2px", marginTop: "36px", marginBottom: "28px" }} />
+
+          <span style={{ fontSize: "30px", color: "#aaaaaa", fontWeight: 400, lineHeight: 1.4 }}>
+            Crafting a space for
+          </span>
+          <span style={{ fontSize: "42px", color: "#ffffff", fontWeight: 800, lineHeight: 1.25 }}>
+            Muslim youth in Ottawa.
+          </span>
+        </div>
+
+        {/* Bottom: URL */}
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <span style={{ color: "#555555", fontSize: "20px", letterSpacing: "0.05em" }}>
+            {siteHost}
+          </span>
+        </div>
       </div>
     ),
     size
