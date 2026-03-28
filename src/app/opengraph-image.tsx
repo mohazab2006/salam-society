@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
-import { getSiteUrl } from "@/lib/site-url";
+import { getRequestSiteOrigin } from "@/lib/request-site-origin";
 
 export const alt = "Salam Society — Muslim Community in Ottawa";
 export const size = { width: 1200, height: 630 };
@@ -11,7 +11,7 @@ export const runtime = "nodejs";
 export default async function OgImage() {
   const logoBuffer = await readFile(join(process.cwd(), "public/images/clear-logo.png"));
   const logoSrc = `data:image/png;base64,${logoBuffer.toString("base64")}`;
-  const siteHost = new URL(getSiteUrl()).host;
+  const siteHost = new URL(await getRequestSiteOrigin()).host;
 
   return new ImageResponse(
     (
