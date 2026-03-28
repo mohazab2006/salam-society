@@ -37,10 +37,10 @@ export default function Hero() {
             onError={() => setBgError(true)}
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-r from-black/80 via-black/50 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
         {/* Mask top so nothing bleeds behind the transparent navbar */}
-        <div className="absolute top-0 inset-x-0 h-28 bg-gradient-to-b from-black/90 to-transparent pointer-events-none" />
+        <div className="absolute top-0 inset-x-0 h-28 bg-linear-to-b from-black/90 to-transparent pointer-events-none" />
       </div>
 
       {/* ── Orange ambient blob — smaller/less blur on mobile to save GPU ── */}
@@ -105,11 +105,18 @@ export default function Hero() {
       >
         <p className="text-white/40 text-xs tracking-widest uppercase">{h.scroll}</p>
         <motion.div
-          className="w-0.5 h-8 bg-gradient-to-b from-white/40 to-transparent rounded-full"
+          className="w-0.5 h-8 bg-linear-to-b from-white/40 to-transparent rounded-full"
           animate={{ scaleY: [1, 0.4, 1], opacity: [0.4, 0.8, 0.4] }}
           transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
         />
       </motion.div>
+
+      {/* Inert marker — keeps HTML aligned with older cached RSC payloads (avoids hydration mismatch after deploy). */}
+      <div
+        id="nav-theme-threshold"
+        className="pointer-events-none absolute bottom-0 left-0 right-0 h-px"
+        aria-hidden
+      />
     </section>
   );
 }

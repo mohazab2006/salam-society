@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { LocaleProvider } from "@/components/providers/LocaleProvider";
+import { ScrollRestoration } from "@/components/ScrollRestoration";
 import "./globals.css";
 
 const inter = Inter({
@@ -146,9 +147,6 @@ export default function RootLayout({
         {/* Language */}
         <meta httpEquiv="content-language" content="en, fr" />
 
-        {/* Prevent browser scroll restoration from flashing the scrolled navbar state */}
-        <script dangerouslySetInnerHTML={{ __html: "history.scrollRestoration='manual'" }} />
-
         {/* Structured data */}
         <script
           type="application/ld+json"
@@ -156,6 +154,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full bg-white text-black">
+        <ScrollRestoration />
         <LocaleProvider>
           {children}
         </LocaleProvider>

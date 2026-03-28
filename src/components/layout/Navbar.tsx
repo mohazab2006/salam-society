@@ -11,6 +11,8 @@ function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
+const SCROLL_SOLID_PX = 40;
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -43,11 +45,29 @@ export default function Navbar() {
   }
 
   useLayoutEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 40);
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    const read = () => setScrolled(window.scrollY > SCROLL_SOLID_PX);
+    read();
+    window.addEventListener("scroll", read, { passive: true });
+    window.addEventListener("resize", read);
+
+    const onPageShow = (e: PageTransitionEvent) => {
+      read();
+      if (e.persisted) requestAnimationFrame(read);
+    };
+    window.addEventListener("pageshow", onPageShow);
+
+    const raf = requestAnimationFrame(() => {
+      read();
+      requestAnimationFrame(read);
+    });
+
+    return () => {
+      window.removeEventListener("scroll", read);
+      window.removeEventListener("resize", read);
+      window.removeEventListener("pageshow", onPageShow);
+      cancelAnimationFrame(raf);
+    };
+  }, [pathname]);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -139,13 +159,13 @@ export default function Navbar() {
         }`}
       >
         <div className="container-custom">
-          <nav className="flex items-center justify-between h-[4.5rem] md:h-[5rem]">
+          <nav className="flex items-center justify-between h-18 md:h-20">
 
             {/* ── Logo ── */}
             <Link
               href="/"
               onClick={handleHomeClick}
-              className="flex items-center flex-shrink-0 group"
+              className="flex items-center shrink-0 group"
               aria-label="Salam Society — Home"
             >
               <motion.div
