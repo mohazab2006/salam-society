@@ -69,10 +69,7 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
-  },
+
   verification: {
     // Add your Google Search Console verification code here when you have it:
     // google: "your-verification-code",

@@ -7,7 +7,7 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default function OgImage() {
-  const logoPath = path.join(process.cwd(), "public/images/logo-orange.png");
+  const logoPath = path.join(process.cwd(), "public/images/clear-logo.png");
   const logoData = readFileSync(logoPath);
   const logoBase64 = `data:image/png;base64,${logoData.toString("base64")}`;
 
@@ -48,7 +48,6 @@ export default function OgImage() {
 
         {/* Middle: logo + tagline */}
         <div style={{ display: "flex", flexDirection: "column", gap: "0px" }}>
-          {/* Logo image */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={logoBase64}
@@ -65,7 +64,7 @@ export default function OgImage() {
           <span style={{ fontSize: "30px", color: "#aaaaaa", fontWeight: 400, lineHeight: 1.4 }}>
             Crafting a space for
           </span>
-          <span style={{ fontSize: "38px", color: "#F47B20", fontWeight: 800, lineHeight: 1.3 }}>
+          <span style={{ fontSize: "38px", color: "#ffffff", fontWeight: 800, lineHeight: 1.3 }}>
             Muslim youth in Ottawa.
           </span>
         </div>
