@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
-import { getSiteUrl } from "@/lib/site-url";
+import { readFileSync } from "fs";
+import path from "path";
 import { getRequestSiteOrigin } from "@/lib/request-site-origin";
 
 export const alt = "Salam Society — Muslim Community in Ottawa";
@@ -8,14 +9,21 @@ export const contentType = "image/png";
 export const runtime = "nodejs";
 
 export default async function OgImage() {
-  // Fetch logo from static CDN — works on Vercel (public files are on CDN, not in function bundle)
-  const staticOrigin = getSiteUrl();
-  const logoRes = await fetch(`${staticOrigin}/images/clear-logo.png`);
-  const logoBuffer = await logoRes.arrayBuffer();
-  const logoSrc = `data:image/png;base64,${Buffer.from(logoBuffer).toString("base64")}`;
-
-  // Display hostname (adapts to salamsociety.ca or *.vercel.app)
+  const logoData = readFileSync(
+    path.join(process.cwd(), "public", "images", "clear-logo.png")
+  );
+  const logoSrc = `data:image/png;base64,${logoData.toString("base64")}`;
   const siteHost = new URL(await getRequestSiteOrigin()).host;
+
+  // Load Outfit Bold from Google Fonts (modern, geometric, soft)
+  const fontCss = await fetch(
+    "https://fonts.googleapis.com/css2?family=Outfit:wght@700&display=swap",
+    { headers: { "User-Agent": "Mozilla/5.0" } }
+  ).then((r) => r.text());
+  const fontUrl = fontCss.match(/src: url\(([^)]+)\)/)?.[1];
+  const fontData = fontUrl
+    ? await fetch(fontUrl).then((r) => r.arrayBuffer())
+    : null;
 
   return new ImageResponse(
     (
@@ -23,64 +31,112 @@ export default async function OgImage() {
         style={{
           width: "1200px",
           height: "630px",
-          background: "#0f0f0f",
+          background: "#ffffff",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "space-between",
-          padding: "72px 96px",
+          justifyContent: "center",
+          padding: "0 96px",
           position: "relative",
         }}
       >
-        {/* Left orange accent bar */}
+        {/* Top orange bar */}
         <div
           style={{
             position: "absolute",
             top: 0,
             left: 0,
-            width: "6px",
-            height: "100%",
+            right: 0,
+            height: "6px",
             background: "#F47B20",
-            borderRadius: "0 3px 3px 0",
           }}
         />
 
-        {/* Top: location label */}
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+        {/* Subtle watermark */}
+        <div
+          style={{
+            position: "absolute",
+            right: "-20px",
+            top: "50%",
+            transform: "translateY(-50%)",
+            fontSize: "320px",
+            fontWeight: 900,
+            color: "#F47B20",
+            opacity: 0.04,
+            letterSpacing: "-10px",
+            lineHeight: 1,
+          }}
+        >
+          salam
+        </div>
+
+        {/* Location label */}
+        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "36px" }}>
           <div style={{ width: "32px", height: "3px", background: "#F47B20", borderRadius: "2px" }} />
-          <span style={{ color: "#F47B20", fontSize: "17px", fontWeight: 700, letterSpacing: "0.1em" }}>
+          <span style={{ color: "#F47B20", fontSize: "16px", fontWeight: 700, letterSpacing: "0.12em" }}>
             OTTAWA, ONTARIO · MUSLIM COMMUNITY
           </span>
         </div>
 
-        {/* Middle: logo + tagline */}
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={logoSrc}
-            alt="Salam Society"
-            width={400}
-            height={130}
-            style={{ objectFit: "contain", objectPosition: "left" }}
-          />
+        {/* Logo */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={logoSrc}
+          alt="Salam Society"
+          width={580}
+          height={193}
+          style={{ objectFit: "contain", objectPosition: "left" }}
+        />
 
-          <div style={{ width: "64px", height: "3px", background: "#F47B20", borderRadius: "2px", marginTop: "36px", marginBottom: "28px" }} />
+        {/* Divider */}
+        <div style={{ width: "56px", height: "3px", background: "#F47B20", borderRadius: "2px", marginTop: "28px", marginBottom: "20px" }} />
 
-          <span style={{ fontSize: "30px", color: "#aaaaaa", fontWeight: 400, lineHeight: 1.4 }}>
-            Crafting a space for
+        {/* Tagline */}
+        <span style={{ fontSize: "26px", color: "#888888", fontWeight: 400, lineHeight: 1.4 }}>
+          Crafting a space for
+        </span>
+        <span
+          style={{
+            fontSize: "36px",
+            color: "#111111",
+            fontWeight: 700,
+            lineHeight: 1.2,
+            marginBottom: "48px",
+            fontFamily: fontData ? "Outfit" : "sans-serif",
+            letterSpacing: "-0.5px",
+          }}
+        >
+          Muslim youth in Ottawa.
+        </span>
+
+        {/* Footer band */}
+        <div
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: "72px",
+            background: "#F47B20",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: "0 96px",
+          }}
+        >
+          <span style={{ color: "#ffffff", fontSize: "17px", fontWeight: 700, letterSpacing: "0.05em" }}>
+            Events · Programs · Community
           </span>
-          <span style={{ fontSize: "42px", color: "#ffffff", fontWeight: 800, lineHeight: 1.25 }}>
-            Muslim youth in Ottawa.
-          </span>
-        </div>
-
-        {/* Bottom: URL */}
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          <span style={{ color: "#555555", fontSize: "20px", letterSpacing: "0.05em" }}>
+          <span style={{ color: "rgba(255,255,255,0.85)", fontSize: "17px", letterSpacing: "0.05em" }}>
             {siteHost}
           </span>
         </div>
       </div>
     ),
-    size
+    {
+      ...size,
+      fonts: fontData
+        ? [{ name: "Outfit", data: fontData, style: "normal", weight: 700 }]
+        : [],
+    }
   );
 }
