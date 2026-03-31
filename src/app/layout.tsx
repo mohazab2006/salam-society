@@ -116,6 +116,13 @@ export async function generateMetadata(): Promise<Metadata> {
         "Events, programs, and community initiatives for Muslim youth and families in Ottawa.",
       images: [ogImage],
     },
+    icons: {
+      icon: [
+        { url: "/favicon.ico", sizes: "any" },
+        { url: "/icon.png", type: "image/png" },
+      ],
+      apple: "/icon.png",
+    },
     robots: {
       index: true,
       follow: true,
