@@ -21,7 +21,12 @@
       "Bash(python3 -c \"import sys; content = sys.stdin.read\\(\\); import re; icons = re.findall\\(r''''<link[^>]*\\(?:icon|favicon\\)[^>]*>'''', content, re.I\\); [print\\(i\\) for i in icons]\")",
       "Bash(curl -sL https://salamsociety.ca/favicon.ico -o /dev/null -w \"%{http_code} %{content_type}\")",
       "Bash(node -e \"const d=require\\(''''fs''''\\).readFileSync\\(''''/dev/stdin'''',''''utf8''''\\); const m=d.match\\(/rel=\"\"[^\"\"]*icon[^\"\"]*\"\"[^>]*/g\\); console.log\\(m\\)\")",
-      "Bash(del \"C:\\\\Projects\\\\websites\\\\salam-society\\\\public\\\\favicon.ico\")"
+      "Bash(del \"C:\\\\Projects\\\\websites\\\\salam-society\\\\public\\\\favicon.ico\")",
+      "Bash(curl -sL https://salamsociety.ca/icon.png -o /dev/null -w \"%{http_code} %{content_type} size:%{size_download}\")",
+      "Bash(node -e \"process.stdin.resume\\(\\);let d='''''''';process.stdin.on\\(''''data'''',c=>d+=c\\);process.stdin.on\\(''''end'''',\\(\\)=>{const m=d.match\\(/<head>[\\\\s\\\\S]*?<\\\\/head>/i\\);if\\(m\\)console.log\\(m[0].substring\\(0,3000\\)\\)}\\)\")",
+      "Bash(node -e \"process.stdin.resume\\(\\);let d='''''''';process.stdin.on\\(''''data'''',c=>d+=c\\);process.stdin.on\\(''''end'''',\\(\\)=>{const m=d.match\\(/<head>[\\\\s\\\\S]*?<\\\\/head>/i\\);if\\(m\\){const h=m[0];const i=h.indexOf\\(''''icon''''\\);console.log\\(''''icon at index:'''',i\\);if\\(i>-1\\)console.log\\(h.substring\\(Math.max\\(0,i-100\\),i+500\\)\\)}}\\)\")",
+      "Bash(npx next:*)",
+      "Bash(node -e \"const p = require\\(''./package.json''\\); console.log\\(JSON.stringify\\({name:p.name,deps:Object.keys\\(p.dependencies||{}\\),devDeps:Object.keys\\(p.devDependencies||{}\\)}, null, 2\\)\\)\")"
     ]
   }
 }
