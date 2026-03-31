@@ -13,7 +13,15 @@
       "Bash(node -e \"const p = require\\(''./node_modules/@supabase/ssr/package.json''\\); console.log\\(''supabase-ssr:'', p.version\\)\")",
       "Bash(ls \"C:\\\\Projects\\\\websites\\\\salam-society\\\\src\\\\app\\\\admin\\\\partners\"\" && ls \"C:Projectswebsitessalam-societysrcappadminprograms\"\")",
       "Bash(npm test:*)",
-      "Bash(node -e \":*)"
+      "Bash(node -e \":*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000)",
+      "Bash(curl -s https://salamsociety.ca/sitemap.xml)",
+      "Bash(curl -sL https://salamsociety.ca/sitemap.xml)",
+      "Bash(curl -sL https://salamsociety.ca)",
+      "Bash(python3 -c \"import sys; content = sys.stdin.read\\(\\); import re; icons = re.findall\\(r''''<link[^>]*\\(?:icon|favicon\\)[^>]*>'''', content, re.I\\); [print\\(i\\) for i in icons]\")",
+      "Bash(curl -sL https://salamsociety.ca/favicon.ico -o /dev/null -w \"%{http_code} %{content_type}\")",
+      "Bash(node -e \"const d=require\\(''''fs''''\\).readFileSync\\(''''/dev/stdin'''',''''utf8''''\\); const m=d.match\\(/rel=\"\"[^\"\"]*icon[^\"\"]*\"\"[^>]*/g\\); console.log\\(m\\)\")",
+      "Bash(del \"C:\\\\Projects\\\\websites\\\\salam-society\\\\public\\\\favicon.ico\")"
     ]
   }
 }

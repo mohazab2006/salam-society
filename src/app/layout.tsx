@@ -116,13 +116,6 @@ export async function generateMetadata(): Promise<Metadata> {
         "Events, programs, and community initiatives for Muslim youth and families in Ottawa.",
       images: [ogImage],
     },
-    icons: {
-      icon: [
-        { url: "/favicon.ico", sizes: "any" },
-        { url: "/icon.png", type: "image/png" },
-      ],
-      apple: "/icon.png",
-    },
     robots: {
       index: true,
       follow: true,
@@ -150,6 +143,8 @@ export default async function RootLayout({
       <head>
         {/* OG expects property= not name= (metadata.other would be wrong). */}
         <meta property="og:logo" content={ogLogoUrl} />
+        <link rel="icon" href="/icon.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/icon.png" />
         <link rel="preconnect" href="https://xcnkiwizosklxgsasksc.supabase.co" />
         <link rel="dns-prefetch" href="https://xcnkiwizosklxgsasksc.supabase.co" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
